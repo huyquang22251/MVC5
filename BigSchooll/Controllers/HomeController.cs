@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using BigSchooll.Models;
 using System.Data.Entity;
+using BigSchooll.ViewModels;
 namespace BigSchooll.Controllers
 {
     public class HomeController : Controller
@@ -20,8 +21,12 @@ namespace BigSchooll.Controllers
             .Include(c => c.LecTurer)
             .Include(c => c.Category)
             .Where(c => c.DateTime > DateTime.Now);
-
-            return View(upcommingCourses);
+            var viewModel = new CoursesViewModel
+            {
+                UpcommingCourses = upcommingCourses,
+                ShowAction = User.Identity.IsAuthenticated
+            };
+            return View(viewModel);
         }
 
         public ActionResult About()
